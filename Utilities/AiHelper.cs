@@ -42,6 +42,40 @@ namespace CoelhoBot.Utilities
         }
         public static AiMessage[] BuildInformations(BotData botData)
         {
+            List<GuildUser> users = new List<GuildUser>();
+            try
+            {
+                if (BotManager.Client != null && BotManager.Client.Cache != null && BotManager.Client.Cache.Guilds.TryGetValue(1347318199586259036, out Guild? guild) && guild != null && guild.Roles.TryGetValue(1456035355047362776, out Role? role) && role != null)
+                {
+                    foreach (GuildUser user in guild.Users.Values)
+                    {
+                        if (!user.IsBot)
+                        {
+                            foreach (ulong roleId in user.RoleIds)
+                            {
+                                if (guild.Roles.TryGetValue(roleId, out Role? userRole) && userRole != null)
+                                {
+                                    if (userRole != null && userRole.Position > role.Position)
+                                    {
+                                        users.Add(user);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+            string str = string.Empty;
+            if (users != null && users.Count > 0)
+            {
+                str = "\nSeus superiores são:\n";
+                foreach (GuildUser user in users)
+                {
+                    str += $"[User: {user.Username},ID: {user.Id}]";
+                }
+            }
             return new AiMessage[]
             {
                 new AiMessage()
@@ -49,7 +83,8 @@ namespace CoelhoBot.Utilities
                     role = "system",
                     content = "Informações recentes:\n" +
                     $"Nome atual: {botData.LastName ?? "Coelho"};\n" +
-                    $"SourceCode: https://github.com/OBit508/CoelhoBot"
+                    $"SourceCode: https://github.com/OBit508/CoelhoBot" +
+                    str
                 }
             };
         }

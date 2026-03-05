@@ -9,10 +9,12 @@
 
   <ItemGroup>
     <None Remove="Assets\Config.json" />
+    <None Remove="Assets\Settings.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Assets\Config.json" />
+    <EmbeddedResource Include="Assets\Settings.json" />
   </ItemGroup>
 
   <ItemGroup>
